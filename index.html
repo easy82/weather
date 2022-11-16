@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Weater Forecast</title>
+	<link href="favicon.ico" type="image/x-icon" rel="icon">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" >
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+	<link href="css/weather_default.css" rel="stylesheet">
+	<script src="js/weather_tools.js"></script>
+</head>
+
+<body>
+	<section class="vh-100">
+		<div class="container h-100">
+			<div class="row align-items-center pt-5 h-100">
+
+				<div class="col-md-6">
+					<div class="card mx-3 mb-5 weather-card">
+						<div class="card-body p-5">
+							<div class="d-flex">
+								<h6 class="flex-grow-1">Currently</h6>
+								<h6 id="weather_time"></h6>
+							</div>
+							<div class="d-flex flex-column text-center mt-5 mb-4">
+								<h6 class="display-4 mb-0 font-weight-bold">
+									<span id="weather_temp"></span>&#176;C
+								</h6>
+								<span id="weather_type" class="small text-secondary"></span>
+							</div>
+							<div class="d-flex align-items-center">
+								<div class="flex-grow-1 weather-details">
+									<div>
+										<i class="fas fa-wind fa-fw text-secondary"></i> 
+										<span id="weather_wind_speed" class="ms-1"></span> km/h
+									</div>
+									<div>
+										<i id="weather_wind_dir_icon" class="fas fa-arrow-up-long fa-fw text-secondary"></i> 
+										<span id="weather_wind_dir" class="ms-1"></span>&#176;
+									</div>
+								</div>
+								<div>
+									<i id="weather_icon" class="fas fa-4x"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!-- /col -->
+
+				<div class="col-md-6">
+					<div class="card mx-3 mb-5 weather-card">
+						<div class="card-body p-5">
+							<div class="d-flex">
+								<h6 class="flex-grow-1">Forecast</h6>
+								<h6 id="forecast_time"></h6>
+							</div>
+							<div class="d-flex flex-column text-center mt-5 mb-4">
+								<h6 class="display-4 mb-0 font-weight-bold">
+									<span id="forecast_temp"></span>&#176;C
+								</h6>
+								<span id="forecast_type" class="small text-secondary"></span>
+							</div>
+							<div class="d-flex align-items-center">
+								<div class="flex-grow-1 weather-details">
+									<div>
+										<i class="fas fa-wind fa-fw text-secondary"></i> 
+										<span id="forecast_wind_speed" class="ms-1"></span> km/h
+									</div>
+									<div>
+										<i id="forecast_wind_dir_icon" class="fas fa-arrow-up-long fa-fw text-secondary"></i> 
+										<span id="forecast_wind_dir" class="ms-1"></span>&#176;
+									</div>
+								</div>
+								<div>
+									<i id="forecast_icon" class="fas fa-4x"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!-- /col -->
+
+			</div><!-- /row -->
+		</div><!-- /container -->
+
+		<div class="fixed-bottom p-3 weather-footer">
+			<div class="text-center pt-5">
+				<a href="https://open-meteo.com/" target="_blank">Weather data by Open-Meteo.com</a>
+			</div>
+		</div>
+	</section>
+
+	<!--
+	<pre id="jsondata"></pre>
+	-->
+
+	<script>
+		fetch( "reports/current_weather.json" )
+		.then( response => {
+			return response.json();
+		})
+		.then( jsonData => {
+			var weatherType = getWeatherType( jsonData.current_weather.weathercode );
+
+			fillElement( "weather_temp", jsonData.current_weather.temperature );
+			fillElement( "weather_wind_speed", jsonData.current_weather.windspeed );
+			fillElement( "weather_wind_dir", jsonData.current_weather.winddirection );
+			fillElement( "weather_type", capitalizeString( weatherType ));
+			fillElement( "weather_time", getFormattedTime( jsonData.current_weather.time ));
+			styleElement( "weather_icon", weatherIcons[ weatherType ].icon );
+			styleElement( "weather_icon", weatherIcons[ weatherType ].color );
+			rotateElement( "weather_wind_dir_icon", jsonData.current_weather.winddirection );
+
+			// fillElement( "jsondata", JSON.stringify( jsonData, undefined, 4 ));
+		});
+
+		fetch( "reports/weather_forecast.json" )
+		.then( response => {
+			return response.json();
+		})
+		.then( jsonData => {
+			var index = getNextHourIndexFrom( jsonData.hourly.time );
+
+			if ( index > -1 ) {
+				var weatherType = getWeatherType( jsonData.hourly.weathercode[ index ]);
+
+				fillElement( "forecast_temp", jsonData.hourly.temperature_2m[ index ]);
+				fillElement( "forecast_wind_speed", jsonData.hourly.windspeed_10m[ index ]);
+				fillElement( "forecast_wind_dir", jsonData.hourly.winddirection_10m[ index ]);
+				fillElement( "forecast_type", capitalizeString( weatherType ));
+				fillElement( "forecast_time", getFormattedTime( jsonData.hourly.time[ index ]));
+				styleElement( "forecast_icon", weatherIcons[ weatherType ].icon );
+				styleElement( "forecast_icon", weatherIcons[ weatherType ].color );
+				rotateElement( "forecast_wind_dir_icon", jsonData.hourly.winddirection_10m[ index ]);
+			}
+
+			// fillElement( "jsondata", JSON.stringify( jsonData, undefined, 4 ));
+		});
+	</script>
+</body>
+</html>

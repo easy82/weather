@@ -1,0 +1,31 @@
+body {
+	background-image: url("https://assets.wallpapersin4k.org/uploads/2017/04/Beautiful-Weather-Wallpapers-24.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+	background-color: #c1cfea;
+	font-family: "Roboto", Arial, sans-serif;
+}
+
+.weather-grey { color:  #6c757d; }
+.weather-orange { color: #ffc107; }
+.weather-cyan { color:  #0dcaf0; }
+
+.weather-card {
+	border-color: rgba( 0, 0, 0, 0.3 );
+	box-shadow: 0px 0px 40px rgba( 0, 0, 0, 0.5 );
+	background-color: rgba( 255, 255, 255, 0.7 );
+	text-shadow: 0px 1px 0px rgba( 255, 255, 255, 0.5 );
+	border-radius: 20px;
+}
+
+.weather-details {
+	font-size: 1.2rem;
+}
+
+.weather-footer {
+	background: rgb( 193, 207, 234 );
+	background: linear-gradient( 0deg, rgba( 193, 207, 234, 1 ) 0%, rgba( 193, 207, 234, 0 ) 100% );
+	text-shadow: 0px 0px 20px #c1cfea;
+	font-weight: bold;
+}
