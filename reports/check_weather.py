@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import requests, json, time
 from os.path import exists, getmtime
 
@@ -40,7 +42,7 @@ def save_report_to_file( filename, json_data ):
 def is_report_expired( filename, expiration ):
     if exists( filename ):
         since_last_update = time.time() - getmtime( filename )
-        if expiration > since_last_update:
+        if expiration >= since_last_update:
             return False
     return True
 
@@ -73,15 +75,4 @@ def download_weather():
 
 download_forecast()
 download_weather()
-
-
-#print( get_forecast_response().json() )
-#print( time.ctime( getmtime( forecast_filename )))
-#print( getmtime( forecast_filename ))
-#print( time.time() )
-#print( time.time() - getmtime( forecast_filename ))
-#print( datetime.datetime.now() + datetime.timedelta( hours=1 ))
-#print( is_forecast_expired() )
-#download_forecast()
-
 

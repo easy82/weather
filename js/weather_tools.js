@@ -34,8 +34,8 @@ rotateElement = function( element, value ) {
 
 getFormattedTime = function( datetime ) {
 	return new Date( datetime + "Z" ).toLocaleTimeString( 
-		[], { hour: "2-digit", minute: "2-digit"
-	});
+		[], { hour: "2-digit", minute: "2-digit" } 
+	).replace( /AM|PM/, "" );
 }
 
 getWeatherType = function( id ) {
