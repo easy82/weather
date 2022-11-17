@@ -9,10 +9,10 @@ base_url = "https://api.open-meteo.com/v1/forecast"
 geocoord_latitude = 46.908714
 geocoord_longitude = 19.694847
 
-forecast_filename = "weather_forecast.json"
+forecast_filename = "/var/www/html/reports/weather_forecast.json"
 forecast_expiration = 3600
 
-weather_filename = "current_weather.json"
+weather_filename = "/var/www/html/reports/current_weather.json"
 weather_expiration = 300
 
 
