@@ -1,7 +1,8 @@
 body {
-	background-image: url("https://assets.wallpapersin4k.org/uploads/2017/04/Beautiful-Weather-Wallpapers-24.jpg");
+	background-image: url( "https://assets.wallpapersin4k.org/uploads/2017/04/Beautiful-Weather-Wallpapers-24.jpg" );
 	background-repeat: no-repeat;
 	background-size: cover;
+	background-position: center top;
 	background-attachment: fixed;
 	background-color: #c1cfea;
 	font-family: "Roboto", Arial, sans-serif;
